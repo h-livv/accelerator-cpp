@@ -6,7 +6,11 @@
 
 ## Current
 
-The current simulation tracks a **10 MeV proton** through a simple magnetic beamline:
+Two small programs.
+
+### Particle tracking
+
+The tracking program follows a **10 MeV proton** through a simple magnetic beamline:
 
 ```text
 Dipole → Quadrupole
@@ -18,6 +22,19 @@ Dipole → Quadrupole
 - No electric field, so the magnetic field only changes the particle's direction
 - Checks that the particle's speed remains constant up to numerical roundoff
 
+### FODO cell
+
+One FODO cell, as a product of 2×2 transfer matrices. The cell is the Xsuite getting-started example, in beam order:
+
+```text
+Focusing quadrupole → Drift → Defocusing quadrupole → Drift
+```
+
+- Equal quadrupoles, 1 m, opposite gradients `k1 = +0.12` and `k1 = -0.12` m⁻²
+- Equal drifts, 2 m
+- The first element stands on the right of the product; each later matrix multiplies on the left
+- Prints each matrix, the running product, the cell matrix, and one transverse ray before and after
+
 ### Files
 
 ```text
@@ -25,6 +42,7 @@ elements.py       # Dipole, quadrupole, magnetic fields
 boris.py          # Constants, relativistic velocity, Boris solver
 track.py          # Beamline tracking
 accelerator.py    # Example simulation
+fodo.py           # One FODO cell as a product of transfer matrices
 ```
 
 ## Run
@@ -43,13 +61,17 @@ python accelerator.py
 
 The program prints the particle position after each magnet and the relative speed change.
 
+```bash
+python fodo.py
+```
+
+The program prints the four matrices, the running product, the cell matrix, and the ray.
+
 ## Planned
 
 The project will gradually move from single-particle tracking toward beam optics and beam dynamics:
 
-- FODO lattice
 - Phase-space tracking
-- Transfer matrices
 - Twiss parameters and emittance
 - RF cavities and longitudinal dynamics
 - Energy-recovery linac
